@@ -9,7 +9,6 @@
                 },
                 "offsets": {
                     "items": {
-                        "exclusiveMinimum": 0,
                         "type": "integer"
                     },
                     "title": "Offsets",
@@ -29,25 +28,25 @@
                 "fov": {
                     "$ref": "#/$defs/Pointer"
                 },
-                "hide_hand": {
+                "hide-hand": {
                     "$ref": "#/$defs/Pointer"
                 },
                 "sensitivity": {
                     "$ref": "#/$defs/Pointer"
                 },
-                "server_domain": {
+                "server-domain": {
                     "$ref": "#/$defs/Pointer"
                 },
-                "server_port": {
+                "server-port": {
                     "$ref": "#/$defs/Pointer"
                 }
             },
             "required": [
                 "fov",
-                "hide_hand",
+                "hide-hand",
                 "sensitivity",
-                "server_domain",
-                "server_port"
+                "server-domain",
+                "server-port"
             ],
             "title": "Pointers",
             "type": "object"
@@ -141,10 +140,10 @@
         "version": {
             "$ref": "#/$defs/Version"
         },
-        "release_date": {
-            "format": "date",
-            "title": "Release Date",
-            "type": "string"
+        "release-date": {
+            "exclusiveMinimum": 0,
+            "title": "Release-Date",
+            "type": "integer"
         },
         "pointers": {
             "$ref": "#/$defs/Pointers"
@@ -152,7 +151,7 @@
     },
     "required": [
         "version",
-        "release_date",
+        "release-date",
         "pointers"
     ],
     "title": "VersionData",
