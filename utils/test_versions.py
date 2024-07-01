@@ -1,63 +1,49 @@
 import json
 import os
-import datetime
+import glob
+
+import pytest
+
+from create_schema import VersionData, Pointer, Pointers, Version
 
 
+def pytest_generate_tests(metafunc: pytest.Metafunc):
+    """ Run tests for every version data file in ./versions
+        https://stackoverflow.com/a/63212783
+    """
+    file_list = glob.glob("./versions/*.json")
+    metafunc.parametrize("file_name", file_list)
 
-seen_full_versions = []
-seen_short_versions = []
-seen_numeric_versions = []
+
+@pytest.fixture(autouse=True)
+def seen_versions():
+    """ For checking whether versions are unique
+    """
+    return {
+        "full": [], "short": [], "numeric": []
+    }
 
 
-for file in os.listdir("./versions/"):
-    filename = os.fsdecode(file)
-    data = None
-
-    try:
-        with open(f"./versions/{filename}") as f:
-            data = json.load(f)
-
-    except Exception as e:
-        print(f"[!] '{filename}' Invalid JSON. (Error: '{e}')")
-        continue
-
-    print(f"[*] {filename}")
+def test_version_data(file_name, seen_versions):
+    """ Runt test on a specific version data file
+    """
+    text = None
     
-    try:
-        assert "version" in data, "Missing 'version'."
-        assert "full" in data["version"], "Missing 'full'."
-        assert "short" in data["version"], "Missing 'short'."
-        assert "numeric" in data["version"], "Missing 'numeric'."
+    with open(file_name) as f:
+        text = f.read()
 
-        assert int(data["version"]["full"].replace(".", "")) == data["version"]["numeric"], "'full' does not match 'numeric'."
+    assert text, "File was empty"
 
-        assert data["version"]["full"] not in seen_full_versions, f"'full' version '{data['version']['full']}' already exists"
-        assert data["version"]["short"] not in seen_short_versions, f"'short' version '{data['version']['short']}' already exists"
-        assert data["version"]["numeric"] not in seen_numeric_versions, f"'numeric' version '{data['version']['numeric']}' already exists"
+    version_data = VersionData.model_validate_json(text, strict=True)
 
-        assert "release-date" in data, "Missing 'release-date'."
-        assert data["release-date"], "'release-date' is 0"
-        assert datetime.datetime.fromtimestamp(data["release-date"]).year >= 2020, f"'release-date' is too old"
+    # Some extra validation
+    assert version_data.version.full not in seen_versions["full"], f"'full' version '{version_data.version.full}' already exists"
+    seen_versions["full"].append(version_data.version.full)
 
-        assert "pointers" in data, "Missing 'pointers'."
-        assert "fov" in data["pointers"], "Missing 'fov'."
-        assert "hide-hand" in data["pointers"], "Missing 'hide-hand'."
-        assert "sensitivity" in data["pointers"], "Missing 'sensitivity'."
-        assert "server-domain" in data["pointers"], "Missing 'server-domain'."
-        assert "server-port" in data["pointers"], "Missing 'server-port'."
+    assert version_data.version.short not in seen_versions["short"], f"'short' version '{version_data.version.short}' already exists"
+    seen_versions["short"].append(version_data.version.short)
 
-        for name, info in data["pointers"].items():
-            assert "available" in info, f"{name} is missing 'available'."
-            assert "offsets" in info, f"{name} is missing 'offsets'."
-
-            if info["available"]:
-                assert len(info["offsets"]) != 0, f"{name} is available but has no offsets."
-            else:
-                assert len(info["offsets"]) == 0, f"{name} is not available but has offsets."
-           
-
-    except AssertionError as e:
-        print(f"\t[!] '{filename}' Failed test: '{e}'")
-
-    except ValueError and TypeError as e:
-        print(f"\t[!] '{filename}' Failed test, encountered error: '{e}'")
+    assert version_data.version.numeric not in seen_versions["numeric"], f"'numeric' version '{version_data.version.numeric}' already exists"
+    seen_versions["numeric"].append(version_data.version.numeric)
+        
+        # print("\t" + str(e).replace("\n", "\n\t"))
