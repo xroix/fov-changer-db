@@ -1,6 +1,12 @@
 name: Create Merged File
 
-on: [push, pull_request]
+on:
+  push:
+    paths:
+      - versions/**
+
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -9,11 +15,21 @@ jobs:
       matrix:
         python-version: ["3.11"]
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Creating a merged version file
-      run: |
-        python3 ./utils/create_merged.py
+      - name: Clone repository
+        uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Creating a merged version file
+        run: |
+          python3 ./utils/create_merged.py
+      - name: Commit changes
+        run:  |
+          git config user.name github-actions
+          git config user.email github-actions.github.com
+          git add .
+          git commit -m "Generated merged version file."
+      - name: Push changes
+        run:  |
+          git push
