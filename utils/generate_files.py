@@ -1,33 +1,56 @@
+"""
+
+    Converts old SQL database and FastAPI server into a newer and consistent format
+
+    Attention: Override existing version.json files!!!
+
+"""
+
 import json
 import csv
 import re
 
 
-offsets = {}
+VERSION_COUNT = 71
+
+
+########################
+# 1. Parse old backups #
+########################
+
+pointers = {}
 
 with open("./utils/legacy-files/1.csv", encoding="utf-8") as f:
     data = csv.reader(f, delimiter=",")
     
-    offsets = {row[0]: row[1] for row in data if row[0] != "id"}
+    pointers = {
+        row[0]: json.loads(row[1]) for row in data 
+        if row[0] != "id"
+    }
 
 with open("./utils/legacy-files/2.py", encoding="utf-8") as f:
     result = re.findall(r"read_offsets_([0-9]*)\(\)\:\n\s*offsets = '(.*)'", f.read())
 
     for group in result:
-        if group[0] in offsets:
-            print("Found duplicate: ", group[0])
+        if group[0] in pointers:
+            print(f"[!] Found duplicate pointer, ignoring it: {group[0]}")
             continue
 
-        offsets.update({group[0]: group[1]})
+        pointers.update({
+            group[0]: json.loads(group[1])
+        })
 
 
-if len(offsets) != 71:
-    print(f"Only {len(offsets)} offsets found; expecting 71!")
+if len(pointers) != VERSION_COUNT:
+    print(f"[!] Only {len(pointers)} pointers found; expecting {VERSION_COUNT}!")
 
 else:
-    print(f"All {len(offsets)} offsets should have been parsed!")
+    print(f"[*] All {VERSION_COUNT} pointers were parsed.")
 
 
+##################################################################
+# 2. Check #mc-versions discord channel for full version numbers #
+##################################################################
 
 # "full" == internal version of the Windows edition
 version_numbering = {
@@ -44,7 +67,7 @@ with open("./utils/legacy-files/dc-messages.txt", encoding="utf-8") as f:
         numeric = int(group[1].replace(".",""))
 
         if numeric in version_numbering:
-            print("Found duplicate: ", group[1])
+            print("[!] Found duplicate version numbering: ", group[1])
             continue
 
         version_numbering.update({
@@ -55,78 +78,76 @@ with open("./utils/legacy-files/dc-messages.txt", encoding="utf-8") as f:
             }
         })
 
-if len(version_numbering) != 71:
-    print(f"Only {len(version_numbering)} version numberings found; expecting 71!")
+if len(version_numbering) != VERSION_COUNT:
+    print(f"[!] Only {len(version_numbering)} version numberings found; expecting {VERSION_COUNT}!")
 
 else:
-    print(f"All {len(version_numbering)} version numberings should have been parsed!")
+    print(f"[*] All {VERSION_COUNT} version numberings were parsed.")
+
+# print("Offsets: ", json.dumps(list(pointers.keys())))
+# print("Version Numberings: ", json.dumps(list(version_numbering.keys())))
 
 
-print("Offsets: ", json.dumps(list(offsets.keys())))
-print("Version Numberings: ", json.dumps(list(version_numbering.keys())))
+######################################
+# 3. Generate new version.json files #
+######################################
 
-
-
-# Use order of discord messages
+# Use the order of the discord messages
 for numeric_version in version_numbering:
-    offsets_loaded = json.loads(offsets[str(numeric_version)])
+    version_pointers = pointers[str(numeric_version)]
 
-    new_offsets = {
+    new_pointers = {
         "fov": {
-            "available": offsets_loaded["0"]["a"],
-            "offsets": offsets_loaded["0"]["o"]
+            "available": version_pointers["0"]["a"],
+            "offsets": version_pointers["0"]["o"]
         },
         "hide-hand": {
-            "available": offsets_loaded["1"]["a"],
-            "offsets": offsets_loaded["1"]["o"]
+            "available": version_pointers["1"]["a"],
+            "offsets": version_pointers["1"]["o"]
         },
         "sensitivity": {
-            "available": offsets_loaded["2"]["a"],
-            "offsets": offsets_loaded["2"]["o"]
+            "available": version_pointers["2"]["a"],
+            "offsets": version_pointers["2"]["o"]
         }
     }
-    if offsets_loaded["3"]["a"]:
-        new_offsets.update({
+    if version_pointers["3"]["a"]:
+        new_pointers.update({
             "server-domain": {
-                "available": offsets_loaded["3"]["a"],
-                "offsets": offsets_loaded["3"]["o"][0]
-            }
-        })
-        new_offsets.update({
+                "available": version_pointers["3"]["a"],
+                "offsets": version_pointers["3"]["o"][0]
+            },
             "server-port": {
-                "available": offsets_loaded["3"]["a"],
-                "offsets": offsets_loaded["3"]["o"][1]
+                "available": version_pointers["3"]["a"],
+                "offsets": version_pointers["3"]["o"][1]
             }
         })
-
-        # Auto trim
-        if new_offsets["server-domain"]["offsets"][-1] == 0:
-            print(f"{numeric_version} has an invalid zero offset for the server pointer! Removing it...")
-            new_offsets["server-domain"]["offsets"].pop(-1)
 
     else:
-        new_offsets.update({
+        new_pointers.update({
             "server-domain": {
-                "available": offsets_loaded["3"]["a"],
+                "available": version_pointers["3"]["a"],
                 "offsets": []
-            }
-        })
-        new_offsets.update({
+            },
             "server-port": {
-                "available": offsets_loaded["3"]["a"],
+                "available": version_pointers["3"]["a"],
                 "offsets": []
             }
-        })
+        })    
+
+    # Auto trim
+    if new_pointers["server-domain"]["available"] and new_pointers["server-domain"]["offsets"][-1] == 0:
+        print(f"\t[!] {numeric_version} has an invalid zero offset for the server pointer! Removing it...")
+        new_pointers["server-domain"]["offsets"].pop(-1)
 
     data = {
         "version": version_numbering[numeric_version],
         "release-date": None,
-        "pointers": new_offsets,
+        "pointers": new_pointers,
     }
 
     with open(f"versions/{data['version']['full']}.json", "w") as f:
         json.dump(data, f, indent=4)
 
-
+print("[*] All version.json were created.")
 
 
