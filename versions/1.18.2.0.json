@@ -1,0 +1,66 @@
+{
+    "version": {
+        "full": "1.18.2.0",
+        "short": "1.18.0",
+        "numeric": 11820
+    },
+    "release-date": null,
+    "pointers": {
+        "fov": {
+            "available": true,
+            "offsets": [
+                68754608,
+                24,
+                312,
+                24
+            ]
+        },
+        "hide-hand": {
+            "available": true,
+            "offsets": [
+                68754568,
+                16,
+                24,
+                88,
+                3392,
+                16
+            ]
+        },
+        "sensitivity": {
+            "available": true,
+            "offsets": [
+                68754608,
+                16,
+                3240,
+                48,
+                72,
+                20
+            ]
+        },
+        "server-domain": {
+            "available": true,
+            "offsets": [
+                69326456,
+                0,
+                376,
+                8,
+                1208,
+                560,
+                1008
+            ]
+        },
+        "server-port": {
+            "available": true,
+            "offsets": [
+                69326456,
+                0,
+                624,
+                256,
+                608,
+                8,
+                560,
+                1040
+            ]
+        }
+    }
+}
