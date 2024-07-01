@@ -2,7 +2,7 @@
 
     Converts old SQL database and FastAPI server into a newer and consistent format
 
-    Attention: Override existing version.json files!!!
+    Attention: Overrides existing version.json files!!!
 
 """
 
@@ -20,7 +20,7 @@ VERSION_COUNT = 71
 
 pointers = {}
 
-with open("./utils/legacy-files/1.csv", encoding="utf-8") as f:
+with open("./utils/legacy/old-data/1.csv", encoding="utf-8") as f:
     data = csv.reader(f, delimiter=",")
     
     pointers = {
@@ -28,7 +28,7 @@ with open("./utils/legacy-files/1.csv", encoding="utf-8") as f:
         if row[0] != "id"
     }
 
-with open("./utils/legacy-files/2.py", encoding="utf-8") as f:
+with open("./utils/legacy/old-data/2.py", encoding="utf-8") as f:
     result = re.findall(r"read_offsets_([0-9]*)\(\)\:\n\s*offsets = '(.*)'", f.read())
 
     for group in result:
@@ -60,7 +60,7 @@ version_numbering = {
     11610020: {"full": "1.16.1002.0", "short": "1.16.10", "numeric": 11610020},
 }
 
-with open("./utils/legacy-files/dc-messages.txt", encoding="utf-8") as f:
+with open("./utils/legacy/old-data/dc-messages.txt", encoding="utf-8") as f:
     result = re.findall(r"❯\s*([0-9.]*)\s*\(([0-9.]*)\)", f.read())
 
     for group in result:

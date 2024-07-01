@@ -1,3 +1,12 @@
+"""
+
+    Retroactively retrieves minecraft release dates from minecraft.wiki to store in 'release-dates.json'
+
+    Needs manual patching for a few versions
+
+"""
+
+
 import re
 import os
 import time
