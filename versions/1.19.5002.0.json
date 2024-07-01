@@ -4,7 +4,7 @@
         "short": "1.19.50",
         "numeric": 11950020
     },
-    "release-date": null,
+    "release-date": 1669676400,
     "pointers": {
         "fov": {
             "available": true,
