@@ -24,7 +24,7 @@ class Pointer(BaseModel):
 
     @model_validator(mode="after")
     def check_offsets(self):
-        assert self.available or not self.offsets, "Offsets should be provided when pointer is available."
+        assert not self.available or self.offsets, "Offsets should be provided when pointer is available."
         return self
 
 class Pointers(BaseModel):
