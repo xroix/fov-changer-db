@@ -44,11 +44,11 @@
             ]
         },
         "server-domain": {
-            "available": true,
+            "available": false,
             "offsets": []
         },
         "server-port": {
-            "available": true,
+            "available": false,
             "offsets": []
         }
     }
