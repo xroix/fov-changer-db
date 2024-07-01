@@ -48,7 +48,7 @@
             "offsets": []
         },
         "server-port": {
-            "available": false,
+            "available": true,
             "offsets": []
         }
     }
