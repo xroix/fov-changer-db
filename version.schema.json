@@ -1,0 +1,160 @@
+{
+    "$defs": {
+        "Pointer": {
+            "description": "Describing one version specific pointer needed by FOV-Changer.",
+            "properties": {
+                "available": {
+                    "title": "Available",
+                    "type": "boolean"
+                },
+                "offsets": {
+                    "items": {
+                        "exclusiveMinimum": 0,
+                        "type": "integer"
+                    },
+                    "title": "Offsets",
+                    "type": "array"
+                }
+            },
+            "required": [
+                "available",
+                "offsets"
+            ],
+            "title": "Pointer",
+            "type": "object"
+        },
+        "Pointers": {
+            "description": "Holding all needed pointers for a specific version ",
+            "properties": {
+                "fov": {
+                    "$ref": "#/$defs/Pointer"
+                },
+                "hide_hand": {
+                    "$ref": "#/$defs/Pointer"
+                },
+                "sensitivity": {
+                    "$ref": "#/$defs/Pointer"
+                },
+                "server_domain": {
+                    "$ref": "#/$defs/Pointer"
+                },
+                "server_port": {
+                    "$ref": "#/$defs/Pointer"
+                }
+            },
+            "required": [
+                "fov",
+                "hide_hand",
+                "sensitivity",
+                "server_domain",
+                "server_port"
+            ],
+            "title": "Pointers",
+            "type": "object"
+        },
+        "Version": {
+            "description": "A game version can be specified in a number of ways.",
+            "properties": {
+                "full": {
+                    "pattern": "^[0-9.]*$",
+                    "title": "Full",
+                    "type": "string"
+                },
+                "short": {
+                    "pattern": "^[0-9.]*$",
+                    "title": "Short",
+                    "type": "string"
+                },
+                "numeric": {
+                    "exclusiveMinimum": 0,
+                    "title": "Numeric",
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "full",
+                "short",
+                "numeric"
+            ],
+            "title": "Version",
+            "type": "object"
+        }
+    },
+    "description": "Models the data needed by FOV-Changer for a specific version.",
+    "examples": [
+        {
+            "pointers": {
+                "fov": {
+                    "available": true,
+                    "offsets": [
+                        59104712,
+                        192,
+                        2280,
+                        176,
+                        288,
+                        240
+                    ]
+                },
+                "hide-hand": {
+                    "available": true,
+                    "offsets": [
+                        59332344,
+                        192,
+                        3400,
+                        176,
+                        0,
+                        3304,
+                        232
+                    ]
+                },
+                "sensitivity": {
+                    "available": true,
+                    "offsets": [
+                        59332344,
+                        200,
+                        2016,
+                        176,
+                        3152,
+                        264,
+                        64,
+                        20
+                    ]
+                },
+                "server-domain": {
+                    "available": false,
+                    "offsets": []
+                },
+                "server-port": {
+                    "available": false,
+                    "offsets": []
+                }
+            },
+            "release-date": 1592863200,
+            "version": {
+                "full": "1.16.2.0",
+                "numeric": 11620,
+                "short": "1.16.0"
+            }
+        }
+    ],
+    "properties": {
+        "version": {
+            "$ref": "#/$defs/Version"
+        },
+        "release_date": {
+            "format": "date",
+            "title": "Release Date",
+            "type": "string"
+        },
+        "pointers": {
+            "$ref": "#/$defs/Pointers"
+        }
+    },
+    "required": [
+        "version",
+        "release_date",
+        "pointers"
+    ],
+    "title": "VersionData",
+    "type": "object"
+}

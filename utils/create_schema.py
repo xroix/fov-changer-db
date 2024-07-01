@@ -105,6 +105,6 @@ class VersionData(BaseModel):
 
 if __name__ == "__main__":
     with open(JSON_SCHEMA_FILE, "w") as f:
-        json.dump(VersionData.model_json_schema(), f, indent=4)
+        json.dump(VersionData.model_json_schema(by_alias=True), f, indent=4)
 
     print("[*] Finished")
