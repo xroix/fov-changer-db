@@ -29,5 +29,8 @@ for file in os.listdir("./versions/"):
     # })
     combined.append(data)
 
+# Sort
+combined = sorted(combined, key=lambda version_data: version_data["release-date"])
+
 with open(MERGED_FILE, "w") as f:
     json.dump(combined, f)

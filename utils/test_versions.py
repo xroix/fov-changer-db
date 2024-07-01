@@ -1,5 +1,6 @@
 import json
 import os
+import datetime
 
 
 
@@ -35,7 +36,8 @@ for file in os.listdir("./versions/"):
         assert data["version"]["numeric"] not in seen_numeric_versions, f"'numeric' version '{data['version']['numeric']}' already exists"
 
         assert "release-date" in data, "Missing 'release-date'."
-        # TODO: check whether valid
+        assert data["release-date"], "'release-date' is 0"
+        assert datetime.datetime.fromtimestamp(data["release-date"]).year >= 2020, f"'release-date' is too old"
 
         assert "pointers" in data, "Missing 'pointers'."
         assert "fov" in data["pointers"], "Missing 'fov'."
@@ -55,7 +57,7 @@ for file in os.listdir("./versions/"):
            
 
     except AssertionError as e:
-        print(f"[!] '{filename}' Failed test: '{e}'")
+        print(f"\t[!] '{filename}' Failed test: '{e}'")
 
-    except ValueError as e:
-        print(f"[!] '{filename}' Failed test, encountered error: '{e}'")
+    except ValueError and TypeError as e:
+        print(f"\t[!] '{filename}' Failed test, encountered error: '{e}'")
