@@ -8,3 +8,4 @@ Serving pointers for [FOV-Changer](https://github.com/xroix/MCBE-Win10-FOV-Chang
 ## Todo
  - 1192020 might be faulty
  - all timezones are in GMT+2, make them GMT+0
+ - all timezone since (incl) 1.21.4301.0 are in GMT+1, make the GMT+0
