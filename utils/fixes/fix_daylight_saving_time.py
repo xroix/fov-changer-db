@@ -51,6 +51,5 @@ for path in pathlib.Path("./versions/").iterdir():  # Assumes an alphabetically 
 
     with open(path, "w") as file:
         json.dump(data, file, indent=4)
-        pass
 
 print("Finished")
