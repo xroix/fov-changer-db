@@ -6,4 +6,4 @@
 Serving pointers for [FOV-Changer](https://github.com/xroix/MCBE-Win10-FOV-Changer/), a Minecraft Bedrock zoom mod supporting Windows 10/11.
 
 ## Todo
- - 1192020 might be faulty
+ - [ ] [./versions/1.19.202.0.json] might be invalid
