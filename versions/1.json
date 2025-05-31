@@ -1,0 +1,30 @@
+{
+    "version": {
+        "full": "1",
+        "short": "1",
+        "numeric": 1
+    },
+    "release-date": 0,
+    "pointers": {
+        "fov": {
+            "available": false,
+            "offsets": []
+        },
+        "hide-hand": {
+            "available": false,
+            "offsets": []
+        },
+        "sensitivity": {
+            "available": false,
+            "offsets": []
+        },
+        "server-port": {
+            "available": false,
+            "offsets": []
+        },
+        "server-domain": {
+            "available": false,
+            "offsets": []
+        }
+    }
+}
