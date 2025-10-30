@@ -6,60 +6,36 @@
     },
     "release-date": 1761606000,
     "pointers": {
-    "fov": {
-        "available": true,
-        "offsets": [
-            166171904,
-            32,
-            16,
-            432,
-            24
-        ]
-    },
-    "hide-hand": {
-        "available": true,
-        "offsets": [
-            166171904,
-            32,
-            16,
-            3368,
-            16
-        ]
-    },
-    "sensitivity": {
-        "available": true,
-        "offsets": [
-            166171904,
-            32,
-            3152,
-            32,
-            0,
-            20
-        ]
-    },
-    "server-domain": {
-        "available": true,
-        "offsets": [
-            166780824,
-            72,
-            32,
-            416,
-            8,
-            592,
-            240,
-            112,
-            1008
-        ]
-    },
-    "server-port": {
-        "available": true,
-        "offsets": [
-            163030976,
-            208,
-            0,
-            792,
-            2196
-        ]
+        "fov": {
+            "available": true,
+            "offsets": [
+                166171904,
+                32,
+                16,
+                432,
+                24
+            ]
+        },
+        "hide-hand": {
+            "available": true,
+            "offsets": [
+                166171904,
+                32,
+                16,
+                3368,
+                16
+            ]
+        },
+        "sensitivity": {
+            "available": true,
+            "offsets": [
+                166171904,
+                32,
+                3152,
+                32,
+                0,
+                20
+            ]
+        }
     }
-}
 }
