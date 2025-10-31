@@ -4,7 +4,7 @@
         "short": "1.21.120",
         "numeric": 121120040
     },
-    "release-date": 1761606000,
+    "release-date": 1756857600,
     "pointers": {
         "fov": {
             "available": true,
@@ -35,6 +35,34 @@
                 32,
                 0,
                 20
+            ]
+        },
+        "server-domain": {
+            "available": true,
+            "offsets": [
+                166787408,
+                32,
+                8,
+                16,
+                960,
+                0,
+                72,
+                232,
+                1008
+            ]
+        },
+        "server-port": {
+            "available": true,
+            "offsets": [
+                166787408,
+                32,
+                8,
+                16,
+                960,
+                0,
+                72,
+                232,
+                1076
             ]
         }
     }
