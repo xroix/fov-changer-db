@@ -38,7 +38,7 @@
             ]
         },
         "server-domain": {
-            "available": true,
+            "available": false,
             "offsets": [
                 311235584,
                 8,
@@ -52,7 +52,7 @@
             ]
         },
         "server-port": {
-            "available": true,
+            "available": false,
             "offsets": [
                 311235584,
                 8,
